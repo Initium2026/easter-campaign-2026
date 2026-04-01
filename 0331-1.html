@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端傳媒復活節限定｜選一顆彩蛋，領取春日祝福</title>
+    <style>
+        /* --- 視覺基調設定 --- */
+        :root {
+            --primary-bg: #FFE7DB;   
+            --accent-1: #FFCAAF;     
+            --accent-2: #000000;     
+            --gold-1: #2F4157; 
+            --gold-2: #EBD8AD;       
+            --gold-3: #16202B; 
+            --text-color: #000000;
+            --btn-text: #FFFFFF;
+            --btn-bg: #F9544B;
+            --font-serif: "jf-jinxuan-fresh-2.2", "Songti TC", "Noto Serif TC", "serif";
+            --font-sans: "PingFang TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            color: var(--text-color); font-family: var(--font-sans);
+            overflow: hidden; background-color: var(--primary-bg);
+
+            /* 多重背景設定 */
+            background-image: 
+            url('https://20260216-lucky-envelope.theinitium.com/bg-2.png'),
+            radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 70%),
+            linear-gradient(180deg, #FFE7DB 0%, #FFCAAF 100%);
+    
+            background-repeat: repeat, no-repeat, no-repeat;
+            background-size: 30px auto, auto, auto;
+            background-attachment: fixed;
+        }
+
+            /* [新增] 用於控制只在手機版換行的 class */
+            .mobile-br { display: none; }
+
+        .top-logo { position: fixed; top: 24px; left: 24px; z-index: 100; width: 48px; }
+        .top-logo img { width: 100%; display: block; filter: brightness(0.2); }
+
+        .container { position: relative; width: 100%; height: 100vh; display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: none; box-sizing: border-box; }
+        .container::-webkit-scrollbar { display: none; }
+
+        /* 動畫設定 */
+        @keyframes horseMotion {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(-3deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-5px) rotate(3deg); }
+        }
+
+        .bottom-left-image {
+            position: fixed; bottom: 20px; left: 20px; width: 250px; height: auto; z-index: 8; pointer-events: none;
+            animation: horseMotion 3s ease-in-out infinite; transform-origin: bottom center;
+        }
+
+        .bottom-right-image {
+            position: fixed; bottom: 20px; right: 20px; width: 250px; height: auto; z-index: 8; pointer-events: none;
+            transform: scaleX(-1); animation: horseMotion 3s ease-in-out infinite; transform-origin: bottom center;
+        }
+
+        /* --- 頁面共同樣式 --- */
+        .page { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; min-height: 100%; box-sizing: border-box; z-index: 10; width: 100%; }
+        .page.active { display: flex !important; }
+        .font-serif { font-family: var(--font-serif); }
+        
+        /* --- 小標題圖片樣式 --- */
+        .torn-label-img {
+            width: 250px; 
+            height: auto;
+            display: block;
+            margin: 0 auto 3rem auto; 
+            opacity: 0.9;
+        }
+
+        /* --- 主標題圖片樣式 --- */
+        .main-title-img {
+            width: 500px; 
+            max-width: 90%; 
+            height: auto;
+            display: block;
+            margin: 0 auto 10px auto; 
+        }
+
+        /* --- 副標題圖片樣式 --- */
+        .subtitle-img {
+            width: 580px; 
+            max-width: 95%;
+            height: auto;
+            display: block;
+            margin-top: 3rem; 
+            margin-bottom: 40px; 
+        }
+
+        /* --- 按鈕下方文字圖片樣式 (電腦版) --- */
+        .footer-text-img {
+            width: 100px; 
+            height: auto;
+            display: block;
+            margin: 20px auto 0 auto; 
+            opacity: 0.9;
+        }
+
+        /* --- 按鈕樣式 --- */
+        .btn { background: var(--btn-bg); border: 0px solid var(--accent-2); color: var(--btn-text); padding: 10px 60px; font-size: 1.1rem; cursor: pointer; border-radius: 50px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); text-decoration: none; letter-spacing: 3px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn:hover { background: #000000; color: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.4); transform: translateY(-2px); }
+
+        /* --- 複製按鈕專用樣式 --- */
+        .btn-copy {
+            background: var(--accent-2); 
+            margin-bottom: 15px; 
+            display: none; 
+        }
+        .btn-copy:hover {
+            background: var(--btn-bg);
+        }
+
+        /* --- 第一頁：紅包裝飾 (圖片) --- */
+        .top-right-envelope {
+            position: absolute;
+            width: 160px; 
+            height: auto;
+            right: 8%;
+            top: 10%;
+            z-index: 2;
+            pointer-events: none;
+            animation: envelopeFloatRight 4.5s ease-in-out infinite;
+            animation-delay: -2.25s;
+        }
+
+        @keyframes envelopeFloatRight { 0%, 100% { transform: translateY(0) rotate(10deg); } 50% { transform: translateY(-25px) rotate(13deg); } }
+
+        /* --- 問答頁 --- */
+        .question-box { width: 100%; max-width: 800px; margin-top: 30px; }
+        #quiz-question-text { line-height: 1.6; max-width: 800px; margin: 0 auto 2rem auto; font-size: 1.5rem; color: var(--accent-2); text-align: center !important; }
+        .option { display: block; width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.3); padding: 18px 25px; margin: 12px auto; cursor: pointer; transition: all 0.3s ease; border-radius: 4px; text-align: left !important; font-size: 1.05rem; color: var(--accent-2); box-sizing: border-box; }
+        .option:hover { background: rgba(0, 0, 0, 0.1); border-color: var(--accent-2); }
+
+        /* --- 第 5 頁：紅包牆 --- */
+        .envelope-container { display: flex !important; flex-direction: row !important; justify-content: center !important; align-items: center !important; gap: 20px !important; height: 380px; width: 100%; position: relative; margin-top: -60px; overflow: visible !important; }
+        .envelope-wrapper { position: relative !important; width: 110px !important; height: 230px !important; display: flex !important; justify-content: center !important; align-items: center !important; cursor: pointer; transition: all 0.4s ease; z-index: 10; }
+        .envelope { width: 100px !important; height: 220px !important; position: relative; background: linear-gradient(145deg, #A52A2A, #D43F3F); color: #EBD8AD !important; border: 1px solid rgba(255,255,255,0.3) !important; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border-radius: 8px !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden; }
+        .envelope::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 40%; background: #B22222; clip-path: polygon(0 0, 100% 0, 100% 35%, 50% 100%, 0 35%); z-index: 2; }
+        .envelope span { margin-top: 85px; z-index: 1; position: relative; writing-mode: vertical-rl; text-orientation: upright; font-size: 1.4rem; letter-spacing: 2px; font-family: var(--font-serif); }
+        .envelope-wrapper:hover { z-index: 100 !important; transform: translateY(-30px) scale(1.05) !important; }
+
+        /* --- 第 6 頁：延伸閱讀 --- */
+        #page6 h2 { 
+            color: var(--accent-2); 
+            letter-spacing: 2px; 
+            margin-bottom: 0px; 
+            font-size: 2.2rem;
+            margin-top: -20px; 
+        }
+
+        #page6 .shop-title-bottom {
+            margin-top: 10px !important; 
+            margin-bottom: 20px !important;
+        }
+
+        .exhibition-wrapper { 
+            display: flex; 
+            flex-direction: row; 
+            gap: 40px; 
+            padding: 0 40px; 
+            margin-bottom: 20px; 
+            overflow-x: auto; 
+            justify-content: center; 
+            width: 100%; 
+            margin-top: 20px; 
+        }
+
+        .exhibition-item { flex: 0 0 300px; background: rgba(0, 0, 0, 0.05); padding: 0 0 25px 0; border-left: 2px solid var(--accent-2); overflow: hidden; display: flex; flex-direction: column; box-sizing: border-box; z-index: 10; position: relative; text-align: left !important; }
+        .exhibition-img { width: calc(100% - 32px); margin: 16px auto 12px auto; height: 160px; object-fit: cover; display: block; border: 0.5px solid var(--accent-2); opacity: 0.9; box-sizing: border-box; }
+        .exhibition-item h3 { padding: 0 24px; margin: 0 0 8px 0 !important; color: var(--accent-2); font-size: 1.1rem; text-align: left !important; }
+        .exhibition-item p { padding: 0 24px; margin: 0 0 15px 0 !important; font-size: 0.9rem; opacity: 0.8; line-height: 1.6; flex-grow: 1; color: var(--accent-2); text-align: left !important; }
+        
+        /* --- POP-UP 彈窗 --- */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 231, 219, 0.95); justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(5px); }
+        .popup { background: #fff; padding: 40px 30px; border: 2px solid var(--accent-2); text-align: center; width: 75%; max-width: 400px; color: var(--accent-2); display: flex; flex-direction: column; align-items: center; }
+        #result-title { font-size: 2rem; margin: 0 0 15px 0; color: var(--accent-2); letter-spacing: 2px; }
+        #result-subtitle { font-size: 1.1rem; margin-bottom: 15px; line-height: 1.5; color: var(--accent-2); font-weight: 500; }
+        
+        /* [修改] 統一 #result-code 與 #result-code-2 樣式，並設定 inline-block 解決寬度問題 */
+        #result-code, #result-code-2 { 
+            font-family: monospace; 
+            font-size: 1rem; 
+            color: #A52A2A; 
+            border: 1px dashed #A52A2A; 
+            padding: 5px 15px; 
+            margin-bottom: 25px; 
+            letter-spacing: 1px; 
+            background: rgba(165, 42, 42, 0.05);
+            display: inline-block; /* 👈 關鍵：讓框框隨文字縮放 */
+        }
+
+        #result-subtitle-2 { font-size: 1.1rem; margin-bottom: 15px; line-height: 1.5; color: var(--accent-2); font-weight: 500; }
+
+        /* --- 彈窗額外文字樣式 --- */
+        .extra-info-box {
+            margin-top: -10px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+            text-align: center;
+        }
+        .extra-info-box p { margin: 4px 0; }
+
+        .action-area { display: flex; gap: 20px; justify-content: center; align-items: center; margin-top: 0px; margin-bottom: 30px; width: 100%; flex-wrap: wrap; }
+        .action-area .btn { min-width: 180px; padding: 10px 30px !important; }
+
+        /* --- 手機版適配 (在此處修改文字大小) --- */
+        @media (max-width: 900px) {
+            .page { padding: 40px 15px; }
+
+        /* [新增] 讓 .mobile-br 在手機版顯示為換行 */
+            .mobile-br { display: inline !important; }
+            
+            .top-right-envelope { 
+                width: 90px; 
+                right: 20px; 
+                top: auto !important; 
+                bottom: 70%; 
+            }
+
+            .env-left { left: -10px; top: 18%; }
+            .torn-label-img { width: 150px; margin-bottom: 1rem; }
+            .main-title-img { width: 300px; margin-top: 10px; }
+            .subtitle-img { width: 350px; margin-top: 1rem; margin-bottom: 20px; }
+            .footer-text-img { width: 70px; margin-top: 15px; }
+            
+            .torn-label-img, .main-title-img, .subtitle-img, .footer-text-img, .btn { position: relative; z-index: 10; }
+            
+            .btn { font-size: 0.8rem !important; padding: 5px 40px !important; }
+            
+            /* 手機版紅包牆 */
+            .envelope-container { 
+                flex-wrap: wrap; 
+                height: auto; 
+                margin-top: 30px; 
+                gap: 20px 10px !important; /* 縮小間距 */
+                padding-bottom: 40px; 
+            }
+            .envelope-wrapper {
+                width: 30% !important; 
+                height: 130px !important;
+            }
+            .envelope {
+                width: 70% !important; 
+                height: 100% !important; 
+            }
+            .envelope span { 
+                margin-top: 45px !important; /* 調整文字位置 */
+                font-size: 1rem !important; /* 縮小文字 */
+            }
+
+            /* --- [修改] 第 5 頁標題與副標題文字 --- */
+            #page5 h1 { 
+                margin-top: 0px !important; 
+                font-size: 1.6rem !important; /* 原 1.6rem */
+                width: 100%; 
+            }
+            #page5 .subtitle {
+                font-size: 0.95rem !important; /* 原 1.1rem */
+            }
+            
+            .exhibition-wrapper { 
+                flex-direction: row !important; 
+                flex-wrap: nowrap !important; 
+                overflow-x: auto !important; 
+                justify-content: flex-start !important; 
+                gap: 20px !important; 
+                -webkit-overflow-scrolling: touch; 
+                scroll-snap-type: x mandatory; 
+                margin-top: 20px !important; 
+            }
+            
+            .exhibition-item { flex: 0 0 60% !important; max-width: 320px !important; scroll-snap-align: center; }
+            .popup { width: 70% !important; max-width: 360px !important; border-radius: 12px; }
+            .bottom-left-image { width: 150px; bottom: 10px; left: 10px; animation: horseMotion 2.5s ease-in-out infinite; }
+            .bottom-right-image { width: 150px; bottom: 10px; right: 10px; transform: scaleX(-1); animation: horseMotion 2.5s ease-in-out infinite; }
+            
+            /* --- [修改] 第 6 頁文字 --- */
+            /* 標題大小 */
+            #page6 h2, #page6 .shop-title-bottom { 
+                font-size: 1.3rem !important; /* 原 1.8rem */
+            }
+            /* 上方標題位置 */
+            #page6 h2 { margin-top: -50px !important; }
+            /* 下方標題位置 */
+            #page6 .shop-title-bottom { margin-top: 0px !important; }
+            /* 第 6 頁說明文字 */
+            #page6 p { 
+                font-size: 0.7rem !important; 
+                width: 85% !important;/* 限制寬度，讓文字自動斷行 */
+                margin: 0 auto 30px auto !important; /* 讓文字區塊維持水平置中 */
+            }
+            
+            /* 櫥窗內標題 */
+            .exhibition-item h3 { font-size: 0.5rem !important; }
+
+            /* --- 手機版問答頁面調整 --- */
+            #quiz-page {
+                justify-content: flex-start !important; 
+                padding-top: 130px !important; 
+            }
+
+            .question-box {
+                margin-top: 10px !important; 
+            }
+
+            /* --- [修改] 問答題目與選項文字 --- */
+            #quiz-question-text {
+                font-size: 1.1rem !important;
+                line-height: 1 !important;
+            }
+
+            .option {
+                width: 85% !important; 
+                font-size: 0.8rem !important; 
+                padding: 12px 15px !important;
+                margin: 8px auto !important;
+            }
+
+            /* ▼ [新增] 這裡控制第 6 頁按鈕的寬度 ▼ */
+            #page6 .btn {
+            width: 35% !important;       /* 修改這個數字來調整寬度 (例如 60%, 80%, 或 250px) */
+            max-width: 300px !important; /* 限制最大寬度，避免在平板上太寬 */
+            padding: 10px 0 !important;  /* 調整按鈕高度/內距 */
+            font-size: 0.7rem !important; /* 文字大小 */
+
+            /* 讓文字在按鈕中垂直置中 */
+            line-height: 1.5 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="https://theinitium.com" target="_blank" class="top-logo">
+        <img src="https://theinitium.com/content/images/2026/01/hdd08DDc54kegIlNbgAzfOQUQnjNW11bAafjZAZ6.png" alt="Initium Logo">
+    </a>
+
+    <img src="https://20260216-lucky-envelope.theinitium.com/horse-1.png" class="bottom-left-image" alt="左側裝飾馬">
+    <img src="https://20260216-lucky-envelope.theinitium.com/horse-2.png" class="bottom-right-image" alt="右側裝飾馬">
+
+    <div class="container">
+        <div id="page1" class="page active">
+            <img src="https://20260216-lucky-envelope.theinitium.com/bg-1.png" class="top-right-envelope" alt="新春紅包">
+            <img src="https://20260216-lucky-envelope.theinitium.com/torn-label.png" alt="端傳媒新春限定" class="torn-label-img">
+            <img src="https://20260216-lucky-envelope.theinitium.com/main-title.png" class="main-title-img" alt="好運加碼抽紅包">
+            <img src="https://20260216-lucky-envelope.theinitium.com/subtitle.png" class="subtitle-img" alt="活動詳情">
+            <button class="btn" onclick="startChallenge()">立即抽彩蛋</button>
+            <img src="https://20260216-lucky-envelope.theinitium.com/text-1.png" class="footer-text-img" alt="補充說明">
+        </div>
+
+        <div id="quiz-page" class="page">
+            <p id="quiz-progress" style="letter-spacing: 3px; opacity: 0.6; font-size: 0.8rem;">QUESTION 01 / 03</p>
+            <div class="question-box">
+                <h2 id="quiz-question-text" class="font-serif">加載中...</h2>
+                <div id="quiz-options-container"></div>
+            </div>
+        </div>
+
+        <div id="page5" class="page">
+            <h1 class="font-serif" style="font-size: 2.2rem; letter-spacing: 4px; color: var(--btn-bg);">立即試手氣，選一個紅包</h1>
+            <p class="subtitle" style="margin-top: 1rem; margin-bottom: 20px; font-size: 1.1rem; color: var(--accent-2);">限量 1,000 份新春好禮等你抽，<br class="mobile-br">最高抽「線上商店全單100%折抵券」</p>
+            <div class="envelope-container">
+                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上發財</span></div></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上有錢</span></div></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上富有</span></div></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上享受</span></div></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上快樂</span></div></div>
+            </div>
+        </div>
+
+        <div id="page6" class="page">
+            <h2 class="font-serif"><span style="color: #F9544B;">端傳媒線上商店</span></h2>
+            
+            <div class="exhibition-wrapper">
+                <div class="exhibition-item">
+                    <img src="https://shop.theinitium.com/cdn/shop/files/murder-mock-Up-book.jpg?v=1755321940&width=600" class="exhibition-img">
+                    <h3>端傳媒經典報導小書</h3>
+                </div>
+                <div class="exhibition-item">
+                    <img src="https://shop.theinitium.com/cdn/shop/files/sticker-mock-up.png?v=1755321224&width=600" class="exhibition-img">
+                    <h3>端傳媒周年語錄貼紙</h3>
+                </div>
+                <div class="exhibition-item">
+                    <img src="https://shop.theinitium.com/cdn/shop/files/postcard-mockup.png?v=1755321285&width=600" class="exhibition-img">
+                    <h3>端傳媒十年一瞬明信片</h3>
+                </div>
+            </div>
+            
+            <div class="action-area">
+                <a href="https://shop.theinitium.com/" target="_blank" class="btn">前往商店，選購周邊好禮</a>
+            </div>
+
+            <h2 class="font-serif shop-title-bottom"><span style="color: #F9544B;">春節限時免費讀</span></h2>
+            <p class="font-serif" style="font-size: 1.1rem; color: var(--accent-2); margin-bottom: 30px; letter-spacing: 1px; opacity: 0.8;">
+                端傳媒從情人節開始，緊接年廿八到大年初五、連續八天<br class="mobile-br">每天推出一篇免費閱讀文章，陪伴你過年
+            </p>
+            <div class="action-area" style="margin-top: 0;">
+                <a href="https://theinitium.com/tag/2026-lunar-new-year/" target="_blank" class="btn">看更多限時免費報導</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay">
+        <div class="popup">
+            <h2 id="result-title" class="font-serif"></h2>
+            
+            <div id="result-subtitle"></div>
+            <div id="result-code"></div>
+            
+            <div id="second-prize-group" style="display:none; width: 100%;">
+                <div id="result-subtitle-2"></div>
+                <div id="result-code-2"></div>
+            </div>
+
+            <div id="result-extra-info" class="extra-info-box"></div>
+
+            <button id="btn-copy" class="btn btn-copy" onclick="copyResultCode()">複製代碼</button>
+
+            <button class="btn" onclick="switchPage('page6'); document.getElementById('overlay').style.display='none';">前往商店</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            { "q": "2026年歲次是什麼？", "a": ["龍年", "蛇年", "馬年", "羊年"], "correct": 2 },
+            { "q": "以下對於端傳媒的敘述，哪一個不是正確的？", "a": ["邁向成立第11年", "端的讀者遍布全球100+個國家與地區", "2025年榮獲29項新聞獎", "以上皆正確"], "correct": 3 },
+            { "q": "哪一位不是端傳媒「未完結現場」計畫的共同策展人？", "a": ["編輯吳政霆", "編輯許伯崧", "編輯李慧筠", "以上皆是"], "correct": 3 }
+        ];
+
+        // 權重調整版 (10:40:100:150:700) + 測試模式
+        const prizeConfig = [
+            { 
+                id: 1, type: 'win', weight: 10, 
+                title: "｜金馬獎｜", 
+                subtitle: "恭喜你獲得最大獎：線上商店100%折抵券<br>最高折HK$500", 
+                code: "6HR6517Q2807", 
+                subtitle2: "結帳時請同時輸入下方「免運」折扣碼", // 第二組標題
+                code2: "BF7MQ8AK5Z0N", // 第二組代碼
+                text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看"
+            },
+            { id: 2, type: 'win', weight: 40, title: "｜金喜獎｜", subtitle: "恭喜你獲得：線上商店全單 8 折券", code: "MV4RXJPA6B1H", text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
+            { id: 3, type: 'win', weight: 100, title: "｜開春獎｜", subtitle: "恭喜你獲得：線上商店 HK$80 折價券", code: "M19F3350VAYE", text1: "訂單滿 HK$400 即可折抵", text2: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
+            { id: 4, type: 'win', weight: 150, title: "｜好運獎｜", subtitle: "恭喜你獲得：線上商店 9 折券", code: "X9XFA4PRF03E", text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
+            { id: 5, type: 'win', weight: 700, title: "｜隨喜獎｜", subtitle: "恭喜你獲得：線上商店 95 折券", code: "21DM9Q0G83SE", text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
+        ];
+
+        const STORAGE_KEY = 'drawn_prize_2026_real_weights';
+
+        function drawPrize() {
+            // [修改] 啟用一人限抽一次的檢查
+            if (localStorage.getItem(STORAGE_KEY)) {
+                showAlreadyPlayedPopup();
+                return;
+            }
+
+            let totalWeight = 0;
+            prizeConfig.forEach(p => totalWeight += p.weight);
+
+            let random = Math.random() * totalWeight;
+            let result = null;
+            for (let i = 0; i < prizeConfig.length; i++) {
+                if (random < prizeConfig[i].weight) {
+                    result = prizeConfig[i];
+                    break;
+                }
+                random -= prizeConfig[i].weight;
+            }
+
+            // [修改] 抽獎成功後記錄狀態
+            localStorage.setItem(STORAGE_KEY, 'true');
+
+            if (result && result.type === 'win') {
+                showWinPopup(result);
+            }
+        }
+
+        function showWinPopup(win) {
+            document.getElementById('result-title').innerText = win.title;
+            
+            // 第一組
+            document.getElementById('result-subtitle').innerHTML = win.subtitle;
+            document.getElementById('result-code').innerText = win.code;
+            document.getElementById('result-code').style.display = 'inline-block'; // 修改為 inline-block
+
+            // 處理第二組獎項
+            const secondGroup = document.getElementById('second-prize-group');
+            if (win.code2) {
+                document.getElementById('result-subtitle-2').innerHTML = win.subtitle2;
+                document.getElementById('result-code-2').innerText = win.code2;
+                secondGroup.style.display = 'block';
+            } else {
+                secondGroup.style.display = 'none';
+            }
+
+            let extraHtml = '';
+            if (win.text1) extraHtml += `<p>${win.text1}</p>`;
+            if (win.text2) extraHtml += `<p>${win.text2}</p>`;
+            document.getElementById('result-extra-info').innerHTML = extraHtml;
+            document.getElementById('result-extra-info').style.display = 'block';
+
+            const copyBtn = document.getElementById('btn-copy');
+            copyBtn.style.display = 'inline-block'; 
+            copyBtn.innerText = '複製代碼'; 
+
+            updateOverlayBtn();
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        // [新增] 顯示「已抽過」的彈窗邏輯
+        function showAlreadyPlayedPopup() {
+            document.getElementById('result-title').innerText = "💡活動提醒💡";
+            document.getElementById('result-subtitle').innerText = "每人僅限抽獎一次，\n你已經參加過活動囉！";
+            document.getElementById('result-code').style.display = 'none';
+            document.getElementById('second-prize-group').style.display = 'none';
+            document.getElementById('result-extra-info').style.display = 'none';
+            document.getElementById('btn-copy').style.display = 'none';
+            
+            updateOverlayBtn();
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        function copyResultCode() {
+            const code1 = document.getElementById('result-code').innerText;
+            if(!code1) return;
+            
+            const code2Elem = document.getElementById('result-code-2');
+            let textToCopy = code1;
+            
+            if (document.getElementById('second-prize-group').style.display !== 'none' && code2Elem.innerText) {
+                textToCopy = code1 + '\n' + code2Elem.innerText;
+            }
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.getElementById('btn-copy');
+                btn.innerText = "已複製！";
+                setTimeout(() => {
+                    btn.innerText = "複製代碼";
+                }, 2000);
+            }).catch(err => {
+                console.error('複製失敗:', err);
+                alert('複製失敗，請手動複製');
+            });
+        }
+
+        function updateOverlayBtn() {
+            const btn = document.querySelector('#overlay .btn:last-child');
+            if(btn) {
+                btn.innerText = "前往商店";
+                btn.onclick = function() { switchPage('page6'); document.getElementById('overlay').style.display='none'; };
+            }
+        }
+
+        let currentQuestions = []; let currentStep = 0;
+        function switchPage(pageId) { 
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
+            const target = document.getElementById(pageId); 
+            if(target) target.classList.add('active'); 
+            document.querySelector('.container').scrollTop = 0; 
+        }
+        function startChallenge() { currentQuestions = [...quizData]; currentStep = 0; renderQuiz(); switchPage('quiz-page'); }
+        function renderQuiz() {
+            const data = currentQuestions[currentStep];
+            document.getElementById('quiz-progress').innerText = `QUESTION 0${currentStep + 1} / 03`;
+            document.getElementById('quiz-question-text').innerHTML = data.q; 
+            const container = document.getElementById('quiz-options-container'); container.innerHTML = '';
+            data.a.forEach((optionText, index) => {
+                const div = document.createElement('div'); div.className = 'option'; div.innerText = `${String.fromCharCode(65 + index)}. ${optionText}`; div.onclick = () => handleAnswer(div, index, data.correct); container.appendChild(div);
+            });
+        }
+        function handleAnswer(element, selectedIdx, correctIdx) {
+            const allOptions = element.parentElement.querySelectorAll('.option');
+            allOptions.forEach(opt => opt.style.pointerEvents = 'none');
+            if (selectedIdx === correctIdx) element.style.background = "rgba(76, 175, 80, 0.2)";
+            else element.style.background = "rgba(244, 67, 54, 0.2)";
+            setTimeout(() => { if (currentStep < 2) { currentStep++; renderQuiz(); } else { switchPage('page5'); } }, 1000);
+        }
+    </script>
+</body>
+</html>
+
+
+
