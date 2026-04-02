@@ -48,13 +48,19 @@
         .container { position: relative; width: 100%; height: 100vh; display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: none; box-sizing: border-box; }
         .container::-webkit-scrollbar { display: none; }
 
-        /* --- 新增左右下角裝飾圖層 --- */
+        /* --- 新增左右下角裝飾圖層與動畫 --- */
+        @keyframes rabbitFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
         .bottom-left-layer1 {
             position: fixed; bottom: -50px; left: -5px; width: 500px; height: auto; z-index: 8; pointer-events: none;
         }
 
         .bottom-right-layer2 {
             position: fixed; bottom: 70px; right: 180px; width: 200px; height: auto; z-index: 7; pointer-events: none; /* z-index 較小，疊在下方 */
+            animation: rabbitFloat 3s ease-in-out infinite; /* 新增上下浮動動畫 */
         }
 
         .bottom-right-layer3 {
@@ -170,7 +176,6 @@
             font-size: 1rem;
             line-height: 1.6;
             color: #444;
-            /* 👇 修改：讓引言置中對齊 */
             text-align: center;
         }
         .extra-info-box p { margin: 0; }
@@ -193,7 +198,6 @@
             margin-bottom: 15px; 
             line-height: 1.5; 
             color: #555;
-            /* 👇 修改：讓說明文字置中對齊 */
             text-align: center;
         }
 
@@ -410,7 +414,6 @@
         ];
 
         // --- 更新為復活節專屬獎項 (權重均設定為 20 以供測試) ---
-        // 👇 加入了 <br> 讓文案斷行
         const prizeConfig = [
             { 
                 id: 1, type: 'win', weight: 20, 
