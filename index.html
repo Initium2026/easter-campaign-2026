@@ -5,9 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>端傳媒復活節限定｜選一顆彩蛋，領取春日祝福</title>
     <style>
+        /* --- 載入自託管字體 (FOT-Chiaro Std) --- */
+        @font-face {
+            font-family: "FOT-Chiaro Std";
+            /* 使用 jsDelivr 代理 GitHub 檔案以確保穩定載入 */
+            src: url("https://cdn.jsdelivr.net/gh/initiummedia/20260403-easter-campaign/FOT-Chiaro%20Std.otf") format("opentype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         /* --- 視覺基調設定 --- */
         :root {
-            --primary-bg: #FFE7DB;   
+            --primary-bg: #FFBFBF;   
             --accent-1: #FFCAAF;     
             --accent-2: #000000;     
             --gold-1: #2F4157; 
@@ -15,25 +25,18 @@
             --gold-3: #16202B; 
             --text-color: #000000;
             --btn-text: #FFFFFF;
-            --btn-bg: #F9544B;
-            --font-serif: "jf-jinxuan-fresh-2.2", "Songti TC", "Noto Serif TC", "serif";
-            --font-sans: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            --btn-bg: #BE2121;
+            /* 將字體變數統一改為 FOT-Chiaro Std */
+            --font-serif: "FOT-Chiaro Std", "Songti TC", "Noto Serif TC", "serif";
+            --font-sans: "FOT-Chiaro Std", "PingFang TC", "Microsoft JhengHei", sans-serif;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            color: var(--text-color); font-family: var(--font-sans);
-            overflow: hidden; background-color: var(--primary-bg);
-
-            /* 多重背景設定 */
-            background-image: 
-            url('https://20260216-lucky-envelope.theinitium.com/bg-2.png'),
-            radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.4) 0%, transparent 70%),
-            linear-gradient(180deg, #FFE7DB 0%, #FFCAAF 100%);
-    
-            background-repeat: repeat, no-repeat, no-repeat;
-            background-size: 30px auto, auto, auto;
-            background-attachment: fixed;
+            color: var(--text-color); 
+            font-family: var(--font-serif); /* 全域優先使用此字體 */
+            overflow: hidden; 
+            background-color: var(--primary-bg);
         }
 
             /* [新增] 用於控制只在手機版換行的 class */
@@ -45,22 +48,17 @@
         .container { position: relative; width: 100%; height: 100vh; display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: none; box-sizing: border-box; }
         .container::-webkit-scrollbar { display: none; }
 
-        /* 動畫設定 */
-        @keyframes horseMotion {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(-3deg); }
-            50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(-5px) rotate(3deg); }
+        /* --- 新增左右下角裝飾圖層 --- */
+        .bottom-left-layer1 {
+            position: fixed; bottom: -50px; left: -5px; width: 500px; height: auto; z-index: 8; pointer-events: none;
         }
 
-        .bottom-left-image {
-            position: fixed; bottom: 20px; left: 20px; width: 250px; height: auto; z-index: 8; pointer-events: none;
-            animation: horseMotion 3s ease-in-out infinite; transform-origin: bottom center;
+        .bottom-right-layer2 {
+            position: fixed; bottom: 70px; right: 180px; width: 200px; height: auto; z-index: 7; pointer-events: none; /* z-index 較小，疊在下方 */
         }
 
-        .bottom-right-image {
-            position: fixed; bottom: 20px; right: 20px; width: 250px; height: auto; z-index: 8; pointer-events: none;
-            transform: scaleX(-1); animation: horseMotion 3s ease-in-out infinite; transform-origin: bottom center;
+        .bottom-right-layer3 {
+            position: fixed; bottom: -70px; right: -20px; width: 450px; height: auto; z-index: 8; pointer-events: none; /* z-index 較大，疊在上方 */
         }
 
         /* --- 頁面共同樣式 --- */
@@ -106,46 +104,26 @@
         }
 
         /* --- 按鈕樣式 --- */
-        .btn { background: var(--btn-bg); border: 0px solid var(--accent-2); color: var(--btn-text); padding: 10px 60px; font-size: 1.1rem; cursor: pointer; border-radius: 50px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); text-decoration: none; letter-spacing: 3px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn { 
+            font-family: var(--font-serif); /* 確保按鈕套用字體 */
+            background: var(--btn-bg); border: 0px solid var(--accent-2); color: var(--btn-text); padding: 10px 60px; font-size: 1.1rem; cursor: pointer; border-radius: 50px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); text-decoration: none; letter-spacing: 3px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+        }
         .btn:hover { background: #000000; color: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.4); transform: translateY(-2px); }
-
-        /* --- 複製按鈕專用樣式 --- */
-        .btn-copy {
-            background: var(--accent-2); 
-            margin-bottom: 15px; 
-            display: none; 
-        }
-        .btn-copy:hover {
-            background: var(--btn-bg);
-        }
-
-        /* --- 第一頁：紅包裝飾 (圖片) --- */
-        .top-right-envelope {
-            position: absolute;
-            width: 160px; 
-            height: auto;
-            right: 8%;
-            top: 10%;
-            z-index: 2;
-            pointer-events: none;
-            animation: envelopeFloatRight 4.5s ease-in-out infinite;
-            animation-delay: -2.25s;
-        }
-
-        @keyframes envelopeFloatRight { 0%, 100% { transform: translateY(0) rotate(10deg); } 50% { transform: translateY(-25px) rotate(13deg); } }
 
         /* --- 問答頁 --- */
         .question-box { width: 100%; max-width: 800px; margin-top: 30px; }
         #quiz-question-text { line-height: 1.6; max-width: 800px; margin: 0 auto 2rem auto; font-size: 1.5rem; color: var(--accent-2); text-align: center !important; }
-        .option { display: block; width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.3); padding: 18px 25px; margin: 12px auto; cursor: pointer; transition: all 0.3s ease; border-radius: 4px; text-align: left !important; font-size: 1.05rem; color: var(--accent-2); box-sizing: border-box; }
+        .option { 
+            font-family: var(--font-serif); /* 確保選項套用字體 */
+            display: block; width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.3); padding: 18px 25px; margin: 12px auto; cursor: pointer; transition: all 0.3s ease; border-radius: 4px; text-align: left !important; font-size: 1.05rem; color: var(--accent-2); box-sizing: border-box; 
+        }
         .option:hover { background: rgba(0, 0, 0, 0.1); border-color: var(--accent-2); }
 
-        /* --- 第 5 頁：紅包牆 --- */
+        /* --- 第 5 頁：紅包牆/彩蛋牆 --- */
         .envelope-container { display: flex !important; flex-direction: row !important; justify-content: center !important; align-items: center !important; gap: 20px !important; height: 380px; width: 100%; position: relative; margin-top: -60px; overflow: visible !important; }
         .envelope-wrapper { position: relative !important; width: 110px !important; height: 230px !important; display: flex !important; justify-content: center !important; align-items: center !important; cursor: pointer; transition: all 0.4s ease; z-index: 10; }
-        .envelope { width: 100px !important; height: 220px !important; position: relative; background: linear-gradient(145deg, #A52A2A, #D43F3F); color: #EBD8AD !important; border: 1px solid rgba(255,255,255,0.3) !important; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border-radius: 8px !important; display: flex !important; align-items: center !important; justify-content: center !important; overflow: hidden; }
-        .envelope::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 40%; background: #B22222; clip-path: polygon(0 0, 100% 0, 100% 35%, 50% 100%, 0 35%); z-index: 2; }
-        .envelope span { margin-top: 85px; z-index: 1; position: relative; writing-mode: vertical-rl; text-orientation: upright; font-size: 1.4rem; letter-spacing: 2px; font-family: var(--font-serif); }
+        /* 修改為彩蛋圖片適用的設定 */
+        .egg-img { width: 100px !important; height: auto !important; object-fit: contain; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.2)); }
         .envelope-wrapper:hover { z-index: 100 !important; transform: translateY(-30px) scale(1.05) !important; }
 
         /* --- 第 6 頁：延伸閱讀 --- */
@@ -181,53 +159,50 @@
         
         /* --- POP-UP 彈窗 --- */
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 231, 219, 0.95); justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(5px); }
-        .popup { background: #fff; padding: 40px 30px; border: 2px solid var(--accent-2); text-align: center; width: 75%; max-width: 400px; color: var(--accent-2); display: flex; flex-direction: column; align-items: center; }
+        .popup { background: #fff; padding: 40px 30px; border: 2px solid var(--accent-2); text-align: center; width: 85%; max-width: 480px; color: var(--accent-2); display: flex; flex-direction: column; align-items: center; max-height: 90vh; overflow-y: auto; }
         #result-title { font-size: 2rem; margin: 0 0 15px 0; color: var(--accent-2); letter-spacing: 2px; }
-        #result-subtitle { font-size: 1.1rem; margin-bottom: 15px; line-height: 1.5; color: var(--accent-2); font-weight: 500; }
+        #result-subtitle { font-size: 1.2rem; margin-bottom: 15px; line-height: 1.5; color: var(--btn-bg); font-weight: bold; }
         
-        /* [修改] 統一 #result-code 與 #result-code-2 樣式，並設定 inline-block 解決寬度問題 */
-        #result-code, #result-code-2 { 
-            font-family: monospace; 
-            font-size: 1rem; 
-            color: #A52A2A; 
-            border: 1px dashed #A52A2A; 
-            padding: 5px 15px; 
-            margin-bottom: 25px; 
-            letter-spacing: 1px; 
-            background: rgba(165, 42, 42, 0.05);
-            display: inline-block; /* 👈 關鍵：讓框框隨文字縮放 */
-        }
-
-        #result-subtitle-2 { font-size: 1.1rem; margin-bottom: 15px; line-height: 1.5; color: var(--accent-2); font-weight: 500; }
-
         /* --- 彈窗額外文字樣式 --- */
         .extra-info-box {
-            margin-top: -10px;
+            margin-top: 5px;
             margin-bottom: 25px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             line-height: 1.6;
-            color: #555;
+            color: #444;
+            /* 👇 修改：讓引言置中對齊 */
             text-align: center;
         }
-        .extra-info-box p { margin: 4px 0; }
+        .extra-info-box p { margin: 0; }
 
         .action-area { display: flex; gap: 20px; justify-content: center; align-items: center; margin-top: 0px; margin-bottom: 30px; width: 100%; flex-wrap: wrap; }
         .action-area .btn { min-width: 180px; padding: 10px 30px !important; }
 
-        /* --- 手機版適配 (在此處修改文字大小) --- */
+        /* 新增獎項連結區塊樣式 */
+        .action-group {
+            width: 100%; 
+            margin-bottom: 20px; 
+            background: rgba(0,0,0,0.03); 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .action-subtitle {
+            font-size: 0.95rem; 
+            margin-bottom: 15px; 
+            line-height: 1.5; 
+            color: #555;
+            /* 👇 修改：讓說明文字置中對齊 */
+            text-align: center;
+        }
+
+        /* --- 手機版適配 --- */
         @media (max-width: 900px) {
             .page { padding: 40px 15px; }
 
-        /* [新增] 讓 .mobile-br 在手機版顯示為換行 */
             .mobile-br { display: inline !important; }
             
-            .top-right-envelope { 
-                width: 90px; 
-                right: 20px; 
-                top: auto !important; 
-                bottom: 70%; 
-            }
-
             .env-left { left: -10px; top: 18%; }
             .torn-label-img { width: 150px; margin-bottom: 1rem; }
             .main-title-img { width: 300px; margin-top: 10px; }
@@ -237,36 +212,36 @@
             .torn-label-img, .main-title-img, .subtitle-img, .footer-text-img, .btn { position: relative; z-index: 10; }
             
             .btn { font-size: 0.8rem !important; padding: 5px 40px !important; }
+
+            /* --- 手機版圖層適配 --- */
+            .bottom-left-layer1 { width: 150px; bottom: 10px; left: 10px; }
+            .bottom-right-layer2, .bottom-right-layer3 { width: 150px; bottom: 10px; right: 10px; }
             
-            /* 手機版紅包牆 */
+            /* 手機版紅包牆/彩蛋牆 */
             .envelope-container { 
                 flex-wrap: wrap; 
                 height: auto; 
                 margin-top: 30px; 
-                gap: 20px 10px !important; /* 縮小間距 */
+                gap: 20px 10px !important; 
                 padding-bottom: 40px; 
             }
             .envelope-wrapper {
                 width: 30% !important; 
                 height: 130px !important;
             }
-            .envelope {
+            /* 修改為彩蛋圖片適用的設定 */
+            .egg-img {
                 width: 70% !important; 
-                height: 100% !important; 
-            }
-            .envelope span { 
-                margin-top: 45px !important; /* 調整文字位置 */
-                font-size: 1rem !important; /* 縮小文字 */
+                height: auto !important; 
             }
 
-            /* --- [修改] 第 5 頁標題與副標題文字 --- */
             #page5 h1 { 
                 margin-top: 0px !important; 
-                font-size: 1.6rem !important; /* 原 1.6rem */
+                font-size: 1.6rem !important; 
                 width: 100%; 
             }
             #page5 .subtitle {
-                font-size: 0.95rem !important; /* 原 1.1rem */
+                font-size: 0.95rem !important; 
             }
             
             .exhibition-wrapper { 
@@ -281,30 +256,21 @@
             }
             
             .exhibition-item { flex: 0 0 60% !important; max-width: 320px !important; scroll-snap-align: center; }
-            .popup { width: 70% !important; max-width: 360px !important; border-radius: 12px; }
-            .bottom-left-image { width: 150px; bottom: 10px; left: 10px; animation: horseMotion 2.5s ease-in-out infinite; }
-            .bottom-right-image { width: 150px; bottom: 10px; right: 10px; transform: scaleX(-1); animation: horseMotion 2.5s ease-in-out infinite; }
+            .popup { width: 85% !important; max-width: 360px !important; border-radius: 12px; padding: 25px 15px; }
             
-            /* --- [修改] 第 6 頁文字 --- */
-            /* 標題大小 */
             #page6 h2, #page6 .shop-title-bottom { 
-                font-size: 1.3rem !important; /* 原 1.8rem */
+                font-size: 1.3rem !important; 
             }
-            /* 上方標題位置 */
             #page6 h2 { margin-top: -50px !important; }
-            /* 下方標題位置 */
             #page6 .shop-title-bottom { margin-top: 0px !important; }
-            /* 第 6 頁說明文字 */
             #page6 p { 
                 font-size: 0.7rem !important; 
-                width: 85% !important;/* 限制寬度，讓文字自動斷行 */
-                margin: 0 auto 30px auto !important; /* 讓文字區塊維持水平置中 */
+                width: 85% !important;
+                margin: 0 auto 30px auto !important; 
             }
             
-            /* 櫥窗內標題 */
             .exhibition-item h3 { font-size: 0.5rem !important; }
 
-            /* --- 手機版問答頁面調整 --- */
             #quiz-page {
                 justify-content: flex-start !important; 
                 padding-top: 130px !important; 
@@ -314,7 +280,6 @@
                 margin-top: 10px !important; 
             }
 
-            /* --- [修改] 問答題目與選項文字 --- */
             #quiz-question-text {
                 font-size: 1.1rem !important;
                 line-height: 1 !important;
@@ -327,16 +292,19 @@
                 margin: 8px auto !important;
             }
 
-            /* ▼ [新增] 這裡控制第 6 頁按鈕的寬度 ▼ */
             #page6 .btn {
-            width: 35% !important;       /* 修改這個數字來調整寬度 (例如 60%, 80%, 或 250px) */
-            max-width: 300px !important; /* 限制最大寬度，避免在平板上太寬 */
-            padding: 10px 0 !important;  /* 調整按鈕高度/內距 */
-            font-size: 0.7rem !important; /* 文字大小 */
-
-            /* 讓文字在按鈕中垂直置中 */
+            width: 35% !important;       
+            max-width: 300px !important; 
+            padding: 10px 0 !important;  
+            font-size: 0.7rem !important; 
             line-height: 1.5 !important;
             }
+
+            /* 手機版彈窗微調 */
+            #result-subtitle { font-size: 1.1rem !important; }
+            .extra-info-box { font-size: 0.85rem !important; margin-bottom: 15px; }
+            .action-group { padding: 15px !important; margin-bottom: 15px !important; }
+            .action-subtitle { font-size: 0.8rem !important; margin-bottom: 10px !important;}
         }
     </style>
 </head>
@@ -346,12 +314,12 @@
         <img src="https://theinitium.com/content/images/2026/01/hdd08DDc54kegIlNbgAzfOQUQnjNW11bAafjZAZ6.png" alt="Initium Logo">
     </a>
 
-    <img src="https://20260216-lucky-envelope.theinitium.com/horse-1.png" class="bottom-left-image" alt="左側裝飾馬">
-    <img src="https://20260216-lucky-envelope.theinitium.com/horse-2.png" class="bottom-right-image" alt="右側裝飾馬">
+    <img src="https://20260403-easter-campaign.theinitium.com/layers1.png" class="bottom-left-layer1" alt="裝飾圖層1">
+    <img src="https://20260403-easter-campaign.theinitium.com/layers2.png" class="bottom-right-layer2" alt="裝飾圖層2">
+    <img src="https://20260403-easter-campaign.theinitium.com/layers3.png" class="bottom-right-layer3" alt="裝飾圖層3">
 
     <div class="container">
         <div id="page1" class="page active">
-            <img src="https://20260216-lucky-envelope.theinitium.com/bg-1.png" class="top-right-envelope" alt="新春紅包">
             <img src="https://easter-campaign-2026.vercel.app/torn-label.png" alt="端傳媒新春限定" class="torn-label-img">
             <img src="https://easter-campaign-2026.vercel.app/main-title.png" class="main-title-img" alt="好運加碼抽紅包">
             <img src="https://easter-campaign-2026.vercel.app/subtitle.png" class="subtitle-img" alt="活動詳情">
@@ -368,14 +336,14 @@
         </div>
 
         <div id="page5" class="page">
-            <h1 class="font-serif" style="font-size: 2.2rem; letter-spacing: 4px; color: var(--btn-bg);">立即試手氣，選一個紅包</h1>
-            <p class="subtitle" style="margin-top: 1rem; margin-bottom: 20px; font-size: 1.1rem; color: var(--accent-2);">限量 1,000 份新春好禮等你抽，<br class="mobile-br">最高抽「線上商店全單100%折抵券」</p>
+            <h1 class="font-serif" style="font-size: 2.2rem; letter-spacing: 4px; color: var(--btn-bg);">立即試手氣，選一顆幸運彩蛋</h1>
+            <p class="subtitle" style="margin-top: 1rem; margin-bottom: 20px; font-size: 1.1rem; color: var(--accent-2);">端傳媒「暢讀/守護年付5折優惠」，<br class="mobile-br">及多項大獎等你抽</p>
             <div class="envelope-container">
-                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上發財</span></div></div>
-                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上有錢</span></div></div>
-                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上富有</span></div></div>
-                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上享受</span></div></div>
-                <div class="envelope-wrapper" onclick="drawPrize()"><div class="envelope"><span>馬上快樂</span></div></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><img src="https://20260403-easter-campaign.theinitium.com/egg1.png" class="egg-img" alt="彩蛋1"></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><img src="https://20260403-easter-campaign.theinitium.com/egg2.png" class="egg-img" alt="彩蛋2"></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><img src="https://20260403-easter-campaign.theinitium.com/egg3.png" class="egg-img" alt="彩蛋3"></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><img src="https://20260403-easter-campaign.theinitium.com/egg4.png" class="egg-img" alt="彩蛋4"></div>
+                <div class="envelope-wrapper" onclick="drawPrize()"><img src="https://20260403-easter-campaign.theinitium.com/egg5.png" class="egg-img" alt="彩蛋5"></div>
             </div>
         </div>
 
@@ -413,56 +381,108 @@
 
     <div id="overlay" class="overlay">
         <div class="popup">
-            <h2 id="result-title" class="font-serif"></h2>
+            <h2 id="result-title" class="font-serif" style="color: var(--accent-2);"></h2>
             
             <div id="result-subtitle"></div>
-            <div id="result-code"></div>
             
-            <div id="second-prize-group" style="display:none; width: 100%;">
-                <div id="result-subtitle-2"></div>
-                <div id="result-code-2"></div>
-            </div>
-
             <div id="result-extra-info" class="extra-info-box"></div>
 
-            <button id="btn-copy" class="btn btn-copy" onclick="copyResultCode()">複製代碼</button>
+            <div id="action-group-1" class="action-group">
+                <div id="result-subtitle-2" class="action-subtitle"></div>
+                <a id="btn-link-2" href="#" target="_blank" class="btn" style="display: inline-block; padding: 12px 25px !important; font-size: 1rem; min-width: auto; letter-spacing: 2px; width: auto !important;"></a>
+            </div>
 
-            <button class="btn" onclick="switchPage('page6'); document.getElementById('overlay').style.display='none';">前往商店</button>
+            <div id="action-group-2" class="action-group">
+                <div id="result-subtitle-3" class="action-subtitle"></div>
+                <a id="btn-link-3" href="#" target="_blank" class="btn" style="display: inline-block; padding: 12px 25px !important; font-size: 1rem; background: var(--accent-2); min-width: auto; letter-spacing: 2px; width: auto !important;"></a>
+            </div>
+
+            <button class="btn" style="background: transparent; color: #666; box-shadow: none; padding: 5px 20px !important; letter-spacing: 1px; min-width: auto; margin-top: -5px;" onclick="document.getElementById('overlay').style.display='none'; switchPage('page1');">返回遊戲首頁</button>
         </div>
     </div>
 
     <script>
+        // --- 更新為復活節問答題 ---
         const quizData = [
-            { "q": "2026年歲次是什麼？", "a": ["龍年", "蛇年", "馬年", "羊年"], "correct": 2 },
-            { "q": "以下對於端傳媒的敘述，哪一個不是正確的？", "a": ["邁向成立第11年", "端的讀者遍布全球100+個國家與地區", "2025年榮獲29項新聞獎", "以上皆正確"], "correct": 3 },
-            { "q": "哪一位不是端傳媒「未完結現場」計畫的共同策展人？", "a": ["編輯吳政霆", "編輯許伯崧", "編輯李慧筠", "以上皆是"], "correct": 3 }
+            { "q": "下列哪一個是復活節的代表性動物？", "a": ["狐狸", "松鼠", "兔子", "小鹿"], "correct": 2 },
+            { "q": "下列哪一個是復活節的代表性活動？", "a": ["舉辦舞會", "發紅包", "吃月餅", "尋找彩蛋"], "correct": 3 },
+            { "q": "端每天晚上都會在社群帳號上發佈的主題是什麼？", "a": ["晚安小端", "晚安小傳", "晚安小媒", "睡覺小端"], "correct": 0 }
         ];
 
-        // 權重調整版 (10:40:100:150:700) + 測試模式
+        // --- 更新為復活節專屬獎項 (權重均設定為 20 以供測試) ---
+        // 👇 加入了 <br> 讓文案斷行
         const prizeConfig = [
             { 
-                id: 1, type: 'win', weight: 10, 
-                title: "｜金馬獎｜", 
-                subtitle: "恭喜你獲得最大獎：線上商店100%折抵券<br>最高折HK$500", 
-                code: "6HR6517Q2807", 
-                subtitle2: "結帳時請同時輸入下方「免運」折扣碼", // 第二組標題
-                code2: "BF7MQ8AK5Z0N", // 第二組代碼
-                text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看"
+                id: 1, type: 'win', weight: 20, 
+                title: "光明彩蛋", 
+                subtitle1: "恭喜你獲得：守護年付5折優惠", 
+                text1: "「所謂光明，並非避開陰影，而是在複雜的現實中，依然擁有看清本質的清醒。」<br>—— 感謝你與我們並肩，在迷霧中尋找真實的輪廓。",
+                subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
+                btn2Text: "加入端傳媒",
+                btn2Link: "https://theinitium.com/su5jvelvttaxndlfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
+                subtitle3: "如果你已經是會員，請點擊下方連結，<br>進入表單登錄資料，以獲取訂閱優惠",
+                btn3Text: "填寫表單",
+                btn3Link: "https://initiumform.typeform.com/to/jphZQewQ"
             },
-            { id: 2, type: 'win', weight: 40, title: "｜金喜獎｜", subtitle: "恭喜你獲得：線上商店全單 8 折券", code: "MV4RXJPA6B1H", text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
-            { id: 3, type: 'win', weight: 100, title: "｜開春獎｜", subtitle: "恭喜你獲得：線上商店 HK$80 折價券", code: "M19F3350VAYE", text1: "訂單滿 HK$400 即可折抵", text2: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
-            { id: 4, type: 'win', weight: 150, title: "｜好運獎｜", subtitle: "恭喜你獲得：線上商店 9 折券", code: "X9XFA4PRF03E", text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
-            { id: 5, type: 'win', weight: 700, title: "｜隨喜獎｜", subtitle: "恭喜你獲得：線上商店 95 折券", code: "21DM9Q0G83SE", text1: "請立即截圖或複製儲存折扣碼，離開本頁面後將無法再次查看" },
+            { 
+                id: 2, type: 'win', weight: 20, 
+                title: "自由彩蛋", 
+                subtitle1: "恭喜你獲得：暢讀年付5折優惠", 
+                text1: "「真正的春天，始於你決定不再被演算法切碎，重新奪回理解生活的主動權。」<br>—— 這是一份邀請，讓我們一起想好問題，充實內在的精神食糧。",
+                subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
+                btn2Text: "加入端傳媒",
+                btn2Link: "https://theinitium.com/su5jvelvttaxntbfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
+                subtitle3: "如果你已經是會員，請點擊下方連結，<br>進入表單登錄資料，以獲取訂閱優惠",
+                btn3Text: "填寫表單",
+                btn3Link: "https://initiumform.typeform.com/to/jphZQewQ"
+            },
+            { 
+                id: 3, type: 'win', weight: 20, 
+                title: "生機彩蛋", 
+                subtitle1: "恭喜你獲得：守護年付8折優惠", 
+                text1: "「希望不是虛幻的樂觀，而是看清世界的殘酷後，依然願意讀、聽、看，去理解他人的痛苦與力量。」<br>—— 復活節快樂，願深度閱讀帶給你重啟想像的能量。",
+                subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
+                btn2Text: "加入端傳媒",
+                btn2Link: "https://theinitium.com/su5jvelvttaxntffqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
+                subtitle3: "如果你已經是會員，請點擊下方連結，<br>進入表單登錄資料，以獲取訂閱優惠",
+                btn3Text: "填寫表單",
+                btn3Link: "https://initiumform.typeform.com/to/jphZQewQ"
+            },
+            { 
+                id: 4, type: 'win', weight: 20, 
+                title: "成長彩蛋", 
+                subtitle1: "恭喜你獲得：暢讀年付8折優惠", 
+                text1: "「重生不一定是抵達遠方，而是換一種眼光，重新看清我們身處的世界。」<br>—— 願這份思辨的勇氣，成為你春日裡的微光。",
+                subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
+                btn2Text: "加入端傳媒",
+                btn2Link: "https://theinitium.com/su5jvelvttaxntjfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
+                subtitle3: "如果你已經是會員，請點擊下方連結，<br>進入表單登錄資料，以獲取訂閱優惠",
+                btn3Text: "填寫表單",
+                btn3Link: "https://initiumform.typeform.com/to/jphZQewQ"
+            },
+            { 
+                id: 5, type: 'win', weight: 20, 
+                title: "甦醒彩蛋", 
+                subtitle1: "恭喜你獲得：暢讀月付9折優惠", 
+                text1: "「萬物復甦的季節，最好的禮物不是更多信息，而是對世界保持好奇、對真相保有耐心。」<br>—— 在紛擾的時代，我們為你留一個安靜思考的位置。",
+                subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
+                btn2Text: "加入端傳媒",
+                btn2Link: "https://theinitium.com/su5jvelvttaxntnfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
+                subtitle3: "如果你已經是會員，請點擊下方連結，<br>進入表單登錄資料，以獲取訂閱優惠",
+                btn3Text: "填寫表單",
+                btn3Link: "https://initiumform.typeform.com/to/jphZQewQ"
+            },
         ];
 
         const STORAGE_KEY = 'drawn_prize_2026_real_weights';
 
         function drawPrize() {
-            // [修改] 啟用一人限抽一次的檢查
+            /* [測試模式] 暫時註解掉一人限抽一次的檢查 
             if (localStorage.getItem(STORAGE_KEY)) {
                 showAlreadyPlayedPopup();
                 return;
             }
+            */
 
             let totalWeight = 0;
             prizeConfig.forEach(p => totalWeight += p.weight);
@@ -477,88 +497,52 @@
                 random -= prizeConfig[i].weight;
             }
 
-            // [修改] 抽獎成功後記錄狀態
+            /* [測試模式] 暫時註解掉抽獎成功後記錄狀態
             localStorage.setItem(STORAGE_KEY, 'true');
+            */
 
             if (result && result.type === 'win') {
                 showWinPopup(result);
             }
         }
 
+        // --- 配合新獎項格式重寫顯示邏輯 ---
         function showWinPopup(win) {
-            document.getElementById('result-title').innerText = win.title;
+            document.getElementById('result-title').innerText = `｜${win.title}｜`;
+            document.getElementById('result-subtitle').innerHTML = win.subtitle1;
             
-            // 第一組
-            document.getElementById('result-subtitle').innerHTML = win.subtitle;
-            document.getElementById('result-code').innerText = win.code;
-            document.getElementById('result-code').style.display = 'inline-block'; // 修改為 inline-block
+            // 寫入引言
+            document.getElementById('result-extra-info').innerHTML = `<p>${win.text1}</p>`;
+            
+            // 寫入非會員區塊
+            document.getElementById('result-subtitle-2').innerHTML = win.subtitle2;
+            const btnLink2 = document.getElementById('btn-link-2');
+            btnLink2.innerText = win.btn2Text;
+            btnLink2.href = win.btn2Link;
 
-            // 處理第二組獎項
-            const secondGroup = document.getElementById('second-prize-group');
-            if (win.code2) {
-                document.getElementById('result-subtitle-2').innerHTML = win.subtitle2;
-                document.getElementById('result-code-2').innerText = win.code2;
-                secondGroup.style.display = 'block';
-            } else {
-                secondGroup.style.display = 'none';
-            }
+            // 寫入會員區塊
+            document.getElementById('result-subtitle-3').innerHTML = win.subtitle3;
+            const btnLink3 = document.getElementById('btn-link-3');
+            btnLink3.innerText = win.btn3Text;
+            btnLink3.href = win.btn3Link;
 
-            let extraHtml = '';
-            if (win.text1) extraHtml += `<p>${win.text1}</p>`;
-            if (win.text2) extraHtml += `<p>${win.text2}</p>`;
-            document.getElementById('result-extra-info').innerHTML = extraHtml;
-            document.getElementById('result-extra-info').style.display = 'block';
+            // 確保區塊顯示
+            document.getElementById('action-group-1').style.display = 'block';
+            document.getElementById('action-group-2').style.display = 'block';
 
-            const copyBtn = document.getElementById('btn-copy');
-            copyBtn.style.display = 'inline-block'; 
-            copyBtn.innerText = '複製代碼'; 
-
-            updateOverlayBtn();
             document.getElementById('overlay').style.display = 'flex';
         }
 
-        // [新增] 顯示「已抽過」的彈窗邏輯
         function showAlreadyPlayedPopup() {
             document.getElementById('result-title').innerText = "💡活動提醒💡";
             document.getElementById('result-subtitle').innerText = "每人僅限抽獎一次，\n你已經參加過活動囉！";
-            document.getElementById('result-code').style.display = 'none';
-            document.getElementById('second-prize-group').style.display = 'none';
+            
+            // 隱藏活動專屬的區塊
             document.getElementById('result-extra-info').style.display = 'none';
-            document.getElementById('btn-copy').style.display = 'none';
-            
-            updateOverlayBtn();
+            document.getElementById('action-group-1').style.display = 'none';
+            document.getElementById('action-group-2').style.display = 'none';
+
             document.getElementById('overlay').style.display = 'flex';
-        }
-
-        function copyResultCode() {
-            const code1 = document.getElementById('result-code').innerText;
-            if(!code1) return;
-            
-            const code2Elem = document.getElementById('result-code-2');
-            let textToCopy = code1;
-            
-            if (document.getElementById('second-prize-group').style.display !== 'none' && code2Elem.innerText) {
-                textToCopy = code1 + '\n' + code2Elem.innerText;
-            }
-            
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const btn = document.getElementById('btn-copy');
-                btn.innerText = "已複製！";
-                setTimeout(() => {
-                    btn.innerText = "複製代碼";
-                }, 2000);
-            }).catch(err => {
-                console.error('複製失敗:', err);
-                alert('複製失敗，請手動複製');
-            });
-        }
-
-        function updateOverlayBtn() {
-            const btn = document.querySelector('#overlay .btn:last-child');
-            if(btn) {
-                btn.innerText = "前往商店";
-                btn.onclick = function() { switchPage('page6'); document.getElementById('overlay').style.display='none'; };
-            }
         }
 
         let currentQuestions = []; let currentStep = 0;
@@ -588,6 +572,3 @@
     </script>
 </body>
 </html>
-
-
-
