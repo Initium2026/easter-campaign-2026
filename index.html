@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>端傳媒復活節限定｜選一顆彩蛋，領取春日祝福</title>
     <style>
+        /* --- 載入 Google Fonts (Noto Sans TC) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
         /* --- 載入自託管字體 (FOT-Chiaro Std) --- */
         @font-face {
             font-family: "FOT-Chiaro Std";
@@ -59,12 +62,12 @@
         }
 
         .bottom-right-layer2 {
-            position: fixed; bottom: 70px; right: 180px; width: 200px; height: auto; z-index: 7; pointer-events: none; /* z-index 較小，疊在下方 */
+            position: fixed; bottom: 70px; right: 180px; width: 200px; height: auto; z-index: 9; pointer-events: none; /* z-index 較小，疊在下方 */
             animation: rabbitFloat 3s ease-in-out infinite; /* 新增上下浮動動畫 */
         }
 
         .bottom-right-layer3 {
-            position: fixed; bottom: -70px; right: -20px; width: 450px; height: auto; z-index: 8; pointer-events: none; /* z-index 較大，疊在上方 */
+            position: fixed; bottom: -70px; right: -20px; width: 450px; height: auto; z-index: 10; pointer-events: none; /* z-index 較大，疊在上方 */
         }
 
         /* --- 頁面共同樣式 --- */
@@ -120,7 +123,7 @@
         .question-box { width: 100%; max-width: 800px; margin-top: 30px; }
         #quiz-question-text { line-height: 1.6; max-width: 800px; margin: 0 auto 2rem auto; font-size: 1.5rem; color: var(--accent-2); text-align: center !important; }
         .option { 
-            font-family: var(--font-serif); /* 確保選項套用字體 */
+            font-family: "Noto Sans TC", "Noto Sans", sans-serif !important; 
             display: block; width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.3); padding: 18px 25px; margin: 12px auto; cursor: pointer; transition: all 0.3s ease; border-radius: 4px; text-align: left !important; font-size: 1.05rem; color: var(--accent-2); box-sizing: border-box; 
         }
         .option:hover { background: rgba(0, 0, 0, 0.1); border-color: var(--accent-2); }
@@ -177,6 +180,7 @@
             line-height: 1.6;
             color: #444;
             text-align: center;
+            font-family: "Noto Sans TC", "Noto Sans", sans-serif !important;
         }
         .extra-info-box p { margin: 0; }
 
@@ -199,6 +203,7 @@
             line-height: 1.5; 
             color: #555;
             text-align: center;
+            font-family: "Noto Sans TC", "Noto Sans", sans-serif !important;
         }
 
         /* --- 手機版適配 --- */
@@ -218,16 +223,17 @@
             .btn { font-size: 0.8rem !important; padding: 5px 40px !important; }
 
             /* --- 手機版圖層適配 --- */
-            .bottom-left-layer1 { width: 150px; bottom: 10px; left: 10px; }
-            .bottom-right-layer2, .bottom-right-layer3 { width: 150px; bottom: 10px; right: 10px; }
+            .bottom-left-layer1 { width: 500px; bottom: -50px; left: -100px; }
+            .bottom-right-layer2 { width: 100px; bottom: 50px; right: 60px; }
+            .bottom-right-layer3 { width: 300px; bottom: -50px; right: -100px;}
             
             /* 手機版紅包牆/彩蛋牆 */
             .envelope-container { 
                 flex-wrap: wrap; 
                 height: auto; 
-                margin-top: 30px; 
+                margin-top: 0px; 
                 gap: 20px 10px !important; 
-                padding-bottom: 40px; 
+                padding-bottom: 80px; 
             }
             .envelope-wrapper {
                 width: 30% !important; 
@@ -235,8 +241,13 @@
             }
             /* 修改為彩蛋圖片適用的設定 */
             .egg-img {
-                width: 70% !important; 
+                width: 60% !important; 
                 height: auto !important; 
+            }
+
+            #page1 {
+                justify-content: flex-start !important; /* 將對齊方式改為從頂部開始 */
+                padding-top: 25vh !important;          /* 透過調整 padding-top 控制上移的高度 (數值越小越往上) */
             }
 
             #page5 h1 { 
@@ -341,7 +352,7 @@
 
         <div id="page5" class="page">
             <h1 class="font-serif" style="font-size: 2.2rem; letter-spacing: 4px; color: var(--btn-bg);">立即試手氣，選一顆幸運彩蛋</h1>
-            <p class="subtitle" style="margin-top: 1rem; margin-bottom: 20px; font-size: 1.1rem; color: var(--accent-2);">端傳媒「暢讀/守護年付5折優惠」，<br class="mobile-br">及多項大獎等你抽</p>
+            <p class="subtitle" style="margin-top: 1rem; margin-bottom: 20px; font-size: 1.1rem; color: var(--accent-2); font-family: 'Noto Sans TC', 'Noto Sans', sans-serif;">端傳媒「暢讀/守護年付5折優惠」等，<br class="mobile-br">多項大獎等你抽</p>
             <div class="envelope-container">
                 <div class="envelope-wrapper" onclick="drawPrize()"><img src="https://20260403-easter-campaign.theinitium.com/egg1.png" class="egg-img" alt="彩蛋1"></div>
                 <div class="envelope-wrapper" onclick="drawPrize()"><img src="https://20260403-easter-campaign.theinitium.com/egg2.png" class="egg-img" alt="彩蛋2"></div>
@@ -466,7 +477,7 @@
             { 
                 id: 5, type: 'win', weight: 20, 
                 title: "甦醒彩蛋", 
-                subtitle1: "恭喜你獲得：暢讀月付9折優惠", 
+                subtitle1: "恭喜你獲得：暢讀年付9折優惠", 
                 text1: "「萬物復甦的季節，最好的禮物不是更多信息，而是對世界保持好奇、對真相保有耐心。」<br>—— 在紛擾的時代，我們為你留一個安靜思考的位置。",
                 subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
                 btn2Text: "加入端傳媒",
