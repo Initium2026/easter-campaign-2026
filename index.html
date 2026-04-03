@@ -128,7 +128,6 @@
 
         /* --- 問答頁 --- */
         .question-box { width: 100%; max-width: 800px; margin-top: 30px; }
-        /* 👇 修改：加入了 Noto Sans 字體設定 */
         #quiz-question-text { 
             line-height: 1.6; max-width: 800px; margin: 0 auto 2rem auto; font-size: 1.5rem; color: var(--accent-2); text-align: center !important; 
             font-family: "Noto Sans TC", "Noto Sans", sans-serif !important;
@@ -159,7 +158,12 @@
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 231, 219, 0.95); justify-content: center; align-items: center; z-index: 10000; backdrop-filter: blur(5px); }
         .popup { background: #fff; padding: 40px 30px; border: 2px solid var(--accent-2); text-align: center; width: 85%; max-width: 480px; color: var(--accent-2); display: flex; flex-direction: column; align-items: center; max-height: 90vh; overflow-y: auto; }
         #result-title { font-size: 2rem; margin: 0 0 15px 0; color: var(--accent-2); letter-spacing: 2px; }
-        #result-subtitle { font-size: 1.2rem; margin-bottom: 15px; line-height: 1.5; color: var(--btn-bg); font-weight: bold; }
+        
+        /* 👇 修改：加入了 Noto Sans 字體設定 */
+        #result-subtitle { 
+            font-size: 1.2rem; margin-bottom: 15px; line-height: 1.5; color: var(--btn-bg); font-weight: bold; 
+            font-family: "Noto Sans TC", "Noto Sans", sans-serif !important;
+        }
         
         .extra-info-box {
             margin-top: 5px; margin-bottom: 25px; font-size: 1rem; line-height: 1.6; color: #444; text-align: center;
@@ -307,7 +311,7 @@
 
         const prizeConfig = [
             { 
-                id: 1, type: 'win', weight: 20, title: "光明彩蛋", subtitle1: "恭喜你獲得：守護年付5折優惠", 
+                id: 1, type: 'win', weight: 5, title: "光明彩蛋", subtitle1: "恭喜你獲得：守護年付5折優惠", 
                 text1: "「所謂光明，並非避開陰影，而是在複雜的現實中，依然擁有看清本質的清醒。」<br>—— 感謝你與我們並肩，在迷霧中尋找真實的輪廓。",
                 subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
                 btn2Text: "加入端傳媒", btn2Link: "https://theinitium.com/su5jvelvttaxndlfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
@@ -315,7 +319,7 @@
                 btn3Text: "填寫表單", btn3Link: "https://initiumform.typeform.com/to/jphZQewQ"
             },
             { 
-                id: 2, type: 'win', weight: 20, title: "自由彩蛋", subtitle1: "恭喜你獲得：暢讀年付5折優惠", 
+                id: 2, type: 'win', weight: 5, title: "自由彩蛋", subtitle1: "恭喜你獲得：暢讀年付5折優惠", 
                 text1: "「真正的春天，始於你決定不再被演算法切碎，重新奪回理解生活的主動權。」<br>—— 這是一份邀請，讓我們一起想好問題，充實內在的精神食糧。",
                 subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
                 btn2Text: "加入端傳媒", btn2Link: "https://theinitium.com/su5jvelvttaxntbfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
@@ -323,7 +327,7 @@
                 btn3Text: "填寫表單", btn3Link: "https://initiumform.typeform.com/to/UQ3H9s84"
             },
             { 
-                id: 3, type: 'win', weight: 20, title: "生機彩蛋", subtitle1: "恭喜你獲得：守護年付8折優惠", 
+                id: 3, type: 'win', weight: 10, title: "生機彩蛋", subtitle1: "恭喜你獲得：守護年付8折優惠", 
                 text1: "「希望不是虛幻的樂觀，而是看清世界的殘酷後，依然願意讀、聽、看，去理解他人的痛苦與力量。」<br>—— 復活節快樂，願深度閱讀帶給你重啟想像的能量。",
                 subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
                 btn2Text: "加入端傳媒", btn2Link: "https://theinitium.com/su5jvelvttaxntffqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
@@ -331,7 +335,7 @@
                 btn3Text: "填寫表單", btn3Link: "https://initiumform.typeform.com/to/IAQW2EKu"
             },
             { 
-                id: 4, type: 'win', weight: 20, title: "成長彩蛋", subtitle1: "恭喜你獲得：暢讀年付8折優惠", 
+                id: 4, type: 'win', weight: 10, title: "成長彩蛋", subtitle1: "恭喜你獲得：暢讀年付8折優惠", 
                 text1: "「重生不一定是抵達遠方，而是換一種眼光，重新看清我們身處的世界。」<br>—— 願這份思辨的勇氣，成為你春日裡的微光。",
                 subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
                 btn2Text: "加入端傳媒", btn2Link: "https://theinitium.com/su5jvelvttaxntjfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
@@ -339,7 +343,7 @@
                 btn3Text: "填寫表單", btn3Link: "https://initiumform.typeform.com/to/XaM3xqmq"
             },
             { 
-                id: 5, type: 'win', weight: 20, title: "甦醒彩蛋", subtitle1: "恭喜你獲得：暢讀年付9折優惠", 
+                id: 5, type: 'win', weight: 70, title: "甦醒彩蛋", subtitle1: "恭喜你獲得：暢讀年付9折優惠", 
                 text1: "「萬物復甦的季節，最好的禮物不是更多信息，而是對世界保持好奇、對真相保有耐心。」<br>—— 在紛擾的時代，我們為你留一個安靜思考的位置。",
                 subtitle2: "如果你還不是會員，請立即點擊下方按鈕進行訂閱，<br>離開本頁面後將無法再次查看", 
                 btn2Text: "加入端傳媒", btn2Link: "https://theinitium.com/su5jvelvttaxntnfqwnxdwlzaxrpb24grglzy291bnrfndyxmtq/", 
@@ -351,6 +355,11 @@
         const STORAGE_KEY = 'drawn_prize_2026_real_weights';
 
         function drawPrize() {
+            if (localStorage.getItem(STORAGE_KEY)) {
+                showAlreadyPlayedPopup();
+                return;
+            }
+            
             let totalWeight = 0;
             prizeConfig.forEach(p => totalWeight += p.weight);
             let random = Math.random() * totalWeight;
@@ -362,6 +371,9 @@
                 }
                 random -= prizeConfig[i].weight;
             }
+            
+            localStorage.setItem(STORAGE_KEY, 'true');
+            
             if (result && result.type === 'win') {
                 showWinPopup(result);
             }
@@ -381,6 +393,15 @@
             btnLink3.href = win.btn3Link;
             document.getElementById('action-group-1').style.display = 'block';
             document.getElementById('action-group-2').style.display = 'block';
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        function showAlreadyPlayedPopup() {
+            document.getElementById('result-title').innerText = "💡活動提醒💡";
+            document.getElementById('result-subtitle').innerText = "每人僅限抽獎一次，\n你已經參加過活動囉！";
+            document.getElementById('result-extra-info').style.display = 'none';
+            document.getElementById('action-group-1').style.display = 'none';
+            document.getElementById('action-group-2').style.display = 'none';
             document.getElementById('overlay').style.display = 'flex';
         }
 
